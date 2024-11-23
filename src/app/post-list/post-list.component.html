@@ -1,31 +1,59 @@
-<div class="max-w-4xl mx-auto p-4">
-  <h1 class="text-2xl font-bold text-gray-800 mb-4">Post List</h1>
+<div class="max-w-6xl mx-auto px-6 py-8 bg-gray-50">
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-extrabold text-gray-900">Posts</h1>
+    <button
+      class="px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+      [routerLink]="['/create']"
+    >
+      + Create New Post
+    </button>
+  </div>
 
   <ng-container *ngIf="postsState$ | async as state">
-    <div *ngIf="state.loading" class="text-blue-500">Loading...</div>
-    <div *ngIf="state.error" class="text-red-500">Error: {{ state.error }}</div>
+    <div *ngIf="state.loading" class="text-blue-500 text-center py-6">
+      <svg
+        class="animate-spin h-8 w-8 text-blue-500 mx-auto"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.372 0 0 5.372 0 12h4z"
+        ></path>
+      </svg>
+      <p class="mt-4 text-gray-600">Loading posts...</p>
+    </div>
 
-    <ul *ngIf="!state.loading && !state.error" class="space-y-4">
+    <ul
+      *ngIf="!state.loading && !state.error"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+    >
       <li
         *ngFor="let post of state.posts"
-        class="p-4 bg-white shadow rounded border border-gray-200"
+        class="p-6 bg-white shadow-lg rounded-lg transition-transform transform hover:scale-105 hover:shadow-xl"
       >
-        <h2 class="text-xl font-semibold text-gray-700">
-          <a [routerLink]="['/post', post.id]" class="hover:underline">
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">
+          <a
+            [routerLink]="['/post', post.id]"
+            class="text-blue-600 hover:underline"
+          >
             {{ post.title }}
           </a>
         </h2>
-        <p class="text-gray-600">{{ post.body }}</p>
+        <p class="text-gray-600 line-clamp-3">
+          {{ post.body }}
+        </p>
       </li>
     </ul>
   </ng-container>
-
-  <div class="mt-6">
-    <button
-      class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      [routerLink]="['/create']"
-    >
-      Create New Post
-    </button>
-  </div>
 </div>

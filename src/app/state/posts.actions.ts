@@ -1,9 +1,10 @@
 import { createAction, props } from '@ngrx/store';
+import {Post} from "../models/post.model";
 
 export const loadPosts = createAction('[Posts] Load Posts');
 export const loadPostsSuccess = createAction(
   '[Posts] Load Posts Success',
-  props<{ posts: any[] }>()
+  props<{ posts: Post[] }>()
 );
 export const loadPostsFailure = createAction(
   '[Posts] Load Posts Failure',
@@ -16,7 +17,7 @@ export const loadPostById = createAction(
 );
 export const loadPostByIdSuccess = createAction(
   '[Posts] Load Post By ID Success',
-  props<{ post: any }>()
+  props<{ post: Post }>()
 );
 export const loadPostByIdFailure = createAction(
   '[Posts] Load Post By ID Failure',
@@ -25,11 +26,11 @@ export const loadPostByIdFailure = createAction(
 
 export const createPost = createAction(
   '[Posts] Create Post',
-  props<{ post: any }>()
+  props<{ post: Post }>()
 );
 
 export const createPostSuccess = createAction(
   '[Posts] Create Post Success',
-  props<{ post: any }>()
+  props<{ post: Post }>()
 );
 

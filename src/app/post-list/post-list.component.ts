@@ -5,6 +5,7 @@ import { loadPosts } from '../state/posts.actions';
 import { selectPostsState } from '../state/posts.selectors';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import {Post} from "../models/post.model";
 
 @Component({
   selector: 'app-post-list',
@@ -15,7 +16,7 @@ import { RouterLink } from '@angular/router';
 })
 export class PostListComponent implements OnInit {
   postsState$: Observable<{
-    posts: any[];
+    posts: Post[];
     loading: boolean;
     error: string | null;
   }>;

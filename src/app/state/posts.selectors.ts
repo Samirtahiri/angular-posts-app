@@ -1,11 +1,12 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { PostsState } from './posts.reducer';
+import {Post} from "../models/post.model";
 
 export const selectPostsState = createFeatureSelector<PostsState>('posts');
 
 export const selectAllPostsState = createSelector(
   selectPostsState,
-  (state) => ({
+  (state: PostsState) => ({
     posts: state.posts,
     loading: state.loading,
     error: state.error,
@@ -13,8 +14,8 @@ export const selectAllPostsState = createSelector(
 );
 
 export const selectPostById = (postId: string) =>
-  createSelector(selectPostsState, (state) => {
-    const post = state.posts.find((post) => post.id === postId);
+  createSelector(selectPostsState, (state: PostsState) => {
+    const post = state.posts.find((post: Post) => post.id === postId);
 
     if (post) {
       console.log('Post Found Locally:', post);
@@ -27,10 +28,10 @@ export const selectPostById = (postId: string) =>
 
 export const selectPostsLoading = createSelector(
   selectPostsState,
-  (state) => state.loading
+  (state: PostsState) => state.loading
 );
 
 export const selectPostsError = createSelector(
   selectPostsState,
-  (state) => state.error
+  (state: PostsState) => state.error
 );

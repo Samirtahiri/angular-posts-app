@@ -6,6 +6,7 @@ import {selectPostById} from '../state/posts.selectors';
 import {CommonModule} from "@angular/common";
 import {GET_POST_QUERY} from "../graphql/posts.queries";
 import {Apollo} from "apollo-angular";
+import {Post} from "../models/post.model";
 
 @Component({
   selector: 'app-post-detail',
@@ -14,7 +15,7 @@ import {Apollo} from "apollo-angular";
   templateUrl: './post-detail.component.html',
 })
 export class PostDetailComponent implements OnInit {
-  post$!: Observable<any | null>;
+  post$!: Observable<Post | null>;
   loading: boolean = true;
 
   constructor(private route: ActivatedRoute, private store: Store, private apollo: Apollo) {}
@@ -22,14 +23,14 @@ export class PostDetailComponent implements OnInit {
   ngOnInit(): void {
     this.post$ = this.route.paramMap.pipe(
       map((paramMap) => paramMap.get('id')),
-      switchMap((id) => {
+      switchMap((id: string | null) => {
         if (!id) {
           this.loading = false;
           return of(null);
         }
 
         return this.store.select(selectPostById(id)).pipe(
-          switchMap((localPost) => {
+          switchMap((localPost: Post) => {
             if (localPost) {
               return this.apollo
                 .watchQuery<any>({

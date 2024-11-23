@@ -9,6 +9,7 @@ import {
   createPost,
   createPostSuccess,
 } from './posts.actions';
+import {Post} from "../models/post.model";
 
 export interface PostsState {
   posts: any[];
@@ -24,22 +25,22 @@ export const initialState: PostsState = {
 
 export const postsReducer = createReducer(
   initialState,
-  on(loadPosts, (state) => ({ ...state, loading: true, error: null })),
-  on(loadPostsSuccess, (state, { posts }) => ({
+  on(loadPosts, (state: PostsState) => ({ ...state, loading: true, error: null })),
+  on(loadPostsSuccess, (state: PostsState, { posts }) => ({
     ...state,
     loading: false,
     posts: [
       ...state.posts,
-      ...posts.filter((apiPost) => !state.posts.some((localPost) => localPost.id === apiPost.id)),
+      ...posts.filter((apiPost: Post) => !state.posts.some((localPost: Post) => localPost.id === apiPost.id)),
     ],
   })),
-  on(loadPostsFailure, (state, { error }) => ({
+  on(loadPostsFailure, (state: PostsState, { error }) => ({
     ...state,
     loading: false,
     error,
   })),
-  on(loadPostById, (state) => ({ ...state, loading: true, error: null })),
-  on(loadPostByIdSuccess, (state, { post }) => ({
+  on(loadPostById, (state: PostsState) => ({ ...state, loading: true, error: null })),
+  on(loadPostByIdSuccess, (state: PostsState, { post }) => ({
     ...state,
     loading: false,
     posts: [...state.posts.filter((p) => p.id !== post.id), post],
@@ -49,8 +50,8 @@ export const postsReducer = createReducer(
     loading: false,
     error,
   })),
-  on(createPost, (state) => ({ ...state, loading: true, error: null })),
-  on(createPostSuccess, (state, { post }) => ({
+  on(createPost, (state: PostsState) => ({ ...state, loading: true, error: null })),
+  on(createPostSuccess, (state: PostsState, { post }) => ({
     ...state,
     posts: [...state.posts, post],
   }))

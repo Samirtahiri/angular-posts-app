@@ -13,6 +13,7 @@ import {
   createPost,
   createPostSuccess,
 } from './posts.actions';
+import {Post} from "../models/post.model";
 
 @Injectable()
 export class PostsEffects {
