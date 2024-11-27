@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Apollo } from 'apollo-angular';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { GET_POSTS_QUERY, GET_POST_QUERY } from '../graphql/posts.queries';
+import {GET_POSTS_QUERY, GET_POST_QUERY, DELETE_POST_MUTATION, UPDATE_POST_MUTATION} from '../graphql/posts.queries';
 import {
   loadPosts,
   loadPostsSuccess,
@@ -12,6 +12,11 @@ import {
   loadPostByIdFailure,
   createPost,
   createPostSuccess,
+  deletePostById,
+  deletePostByIdSuccess,
+  deletePostByIdFailure,
+  updatePostById,
+  updatePostByIdSuccess, updatePostByIdFailure,
 } from './posts.actions';
 import {Post} from "../models/post.model";
 
@@ -65,4 +70,60 @@ export class PostsEffects {
       map(({ post }) => createPostSuccess({ post })) // Directly update state
     )
   );
+
+  deletePost$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deletePostById),
+      switchMap(({ id }) =>
+        this.apollo.mutate<{ deletePost: boolean }>({
+          mutation: DELETE_POST_MUTATION,
+          variables: { id },
+          refetchQueries: [
+            {
+              query: GET_POSTS_QUERY,
+            },
+          ],
+        }).pipe(
+          map((result) => {
+            console.log('Delete Mutation Result:', result); // Debugging log
+            return deletePostByIdSuccess({ id });
+          }),
+          catchError((error) => {
+            console.error('Delete Mutation Error:', error); // Debugging log
+            return of(deletePostByIdFailure({ error: error.message }));
+          })
+        )
+      )
+    )
+  );
+
+  updatePost$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updatePostById),
+      switchMap(({ id, newPostData }) =>
+        this.apollo.mutate<{ updatePost: { id: string; title: string; body: string } }>({
+          mutation: UPDATE_POST_MUTATION,
+          variables: { id, input: newPostData },
+        }).pipe(
+          map((result) => {
+            const updatedPost = result.data?.updatePost;
+            if (updatedPost) {
+              return updatePostByIdSuccess({
+                id,
+                updatedPost: {
+                  title: updatedPost.title,
+                  body: updatedPost.body,
+                },
+              });
+            } else {
+              throw new Error('No data returned from server');
+            }
+          }),
+          catchError((error) => of(updatePostByIdFailure({ error: error.message })))
+        )
+      )
+    )
+  );
+
+
 }

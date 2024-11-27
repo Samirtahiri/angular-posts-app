@@ -8,6 +8,8 @@
     </button>
   </div>
 
+  <button (click)="onUpdatePost()">samir update</button>
+
   <ng-container *ngIf="post$ | async as post; else loading">
     <div class="mb-6">
       <h1 class="text-4xl font-extrabold text-gray-900 mb-4">

@@ -7,6 +7,7 @@ import {CommonModule} from "@angular/common";
 import {GET_POST_QUERY} from "../graphql/posts.queries";
 import {Apollo} from "apollo-angular";
 import {Post} from "../models/post.model";
+import {updatePostById} from "../state/posts.actions";
 
 @Component({
   selector: 'app-post-detail',
@@ -73,5 +74,11 @@ export class PostDetailComponent implements OnInit {
         );
       })
     );
+  }
+
+  onUpdatePost() {
+    const id = '1'; // ID of the post to update
+    const changes = { title: 'Updated Title', body: 'Updated Body' }; // Fields to update
+    this.store.dispatch(updatePostById({ id, newPostData:changes }));
   }
 }

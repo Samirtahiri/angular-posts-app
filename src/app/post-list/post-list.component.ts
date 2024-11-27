@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { loadPosts } from '../state/posts.actions';
-import { selectPostsState } from '../state/posts.selectors';
+import {deletePostById, loadPosts} from '../state/posts.actions';
+import {selectAllPostsState, selectPostsState} from '../state/posts.selectors';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {Post} from "../models/post.model";
@@ -22,7 +22,12 @@ export class PostListComponent implements OnInit {
   }>;
 
   constructor(private store: Store) {
-    this.postsState$ = this.store.select(selectPostsState);
+    this.postsState$ = this.store.select(selectAllPostsState);
+  }
+
+  deletePostById(postId: string) {
+    console.log('id', postId);
+    this.store.dispatch(deletePostById({ id: postId }));
   }
 
   ngOnInit(): void {

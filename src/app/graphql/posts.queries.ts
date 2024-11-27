@@ -45,3 +45,19 @@ export const CREATE_POST_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_POST_MUTATION = gql`
+  mutation deletePost($id: ID!) {
+  deletePost(id: $id)
+}
+`;
+
+export const UPDATE_POST_MUTATION = gql`
+mutation updatePost($id: ID!, $input: UpdatePostInput!) {
+  updatePost(id: $id, input: $input) {
+    id
+    title
+    body
+  }
+}
+`;

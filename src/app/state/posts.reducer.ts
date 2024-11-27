@@ -7,7 +7,7 @@ import {
   loadPostByIdSuccess,
   loadPostByIdFailure,
   createPost,
-  createPostSuccess,
+  createPostSuccess, deletePostByIdSuccess, updatePostById, updatePostByIdSuccess, updatePostByIdFailure,
 } from './posts.actions';
 import {Post} from "../models/post.model";
 
@@ -54,5 +54,32 @@ export const postsReducer = createReducer(
   on(createPostSuccess, (state: PostsState, { post }) => ({
     ...state,
     posts: [...state.posts, post],
-  }))
+  })),
+  on(deletePostByIdSuccess, (state: PostsState, { id }) => ({
+    ...state,
+    loading: false,
+    posts: state.posts.filter((p) => p.id !== id),
+  })),
+    on(loadPostByIdFailure, (state, { error }) => ({
+      ...state,
+      loading: false,
+      error,
+    })),
+  on(updatePostById, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(updatePostByIdSuccess, (state: PostsState, { id, updatedPost  }) => ({
+    ...state,
+    loading: false,
+    posts: state.posts.map((post) =>
+      post.id === id ? { ...post, ...updatedPost } : post
+    ),
+  })),
+  on(updatePostByIdFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
 );

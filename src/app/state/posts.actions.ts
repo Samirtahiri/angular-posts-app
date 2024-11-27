@@ -34,3 +34,28 @@ export const createPostSuccess = createAction(
   props<{ post: Post }>()
 );
 
+export const deletePostById = createAction(
+  '[Posts] Delete Post By ID',
+  props<{ id: string }>()
+);
+export const deletePostByIdSuccess = createAction(
+  '[Posts] Delete Post By ID Success',
+  props<{ id: string }>()
+);
+export const deletePostByIdFailure = createAction(
+  '[Posts] Delete Post By ID Failure',
+  props<{ error: string }>()
+);
+export const updatePostById = createAction(
+  '[Posts] Update Post By ID',
+  props<{ id: string; newPostData: { title: string; body: string } }>()
+);
+export const updatePostByIdSuccess = createAction(
+  '[Posts] Update Post By ID Success',
+  props<{ id: string; updatedPost: { title: string; body: string } }>()
+);
+export const updatePostByIdFailure = createAction(
+  '[Posts] Update Post By ID Failure',
+  props<{ error: string }>()
+);
+
